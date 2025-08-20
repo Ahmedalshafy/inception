@@ -1,0 +1,132 @@
+Preliminaries
+
+If cheating is suspected, the evaluation stops here. Use the “Cheat” flag to report this.
+
+Preliminary tests:
+
+The use of a local .env file to store info is allowed, and/or also the use of Docker secrets. If any credentials or API keys are available in the Git repository and outside of secrets files created during the evaluation, the evaluation stops and the mark is 0.
+
+The defense can only occur if the evaluated student or group is present.
+
+If no work has been submitted (wrong files, wrong directory, or wrong filenames), the grade is 0, and the evaluation process ends.
+
+For this project, you must clone their Git repository on their workstation.
+
+General instructions
+
+Throughout the evaluation process, if you do not know how to check a requirement, or verify something, the evaluated student must assist you.
+
+Ensure that all files required to configure the application are located within a srcs folder at the root of the repository.
+
+Ensure that a Makefile is located at the root of the repository.
+
+Before beginning the evaluation, execute this in the terminal:
+
+docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null
+
+
+Read the docker-compose.yml file. There must not be network: host or links: in it. Otherwise, the evaluation ends immediately.
+
+docker-compose.yml must contain networks: {}. Otherwise, the evaluation ends immediately.
+
+Examine the Makefile and all scripts. None must contain --link.
+
+Examine Dockerfiles:
+
+None may contain tail -f or commands running in background.
+
+ENTRYPOINT should not be bash or sh.
+
+Containers must be built from either the penultimate stable version of Alpine or Debian.
+
+Prohibited: sleep infinity, tail -f /dev/null, tail -f /dev/random.
+
+Run the Makefile.
+
+Mandatory part – Project overview
+
+The student must explain in simple terms:
+
+How Docker and docker compose work.
+
+Difference between Docker image used with docker compose and without.
+
+Benefits of Docker compared to VMs.
+
+Relevance of the directory structure required for this project.
+
+Simple setup
+
+Ensure NGINX is accessible only through port 443.
+
+Ensure SSL/TLS certificate is used.
+
+WordPress site must be properly installed and configured (no install page).
+
+Access via https://login.42.fr, where login is the student’s username.
+
+Must not work via http://login.42.fr.
+
+Docker Basics
+
+One Dockerfile per service, not empty.
+
+Containers must be built from Alpine/Debian penultimate stable version.
+
+Docker images must have the same name as their service.
+
+Must be built with docker-compose and launched via Makefile.
+
+Docker Network
+
+Must check with docker-compose.yml.
+
+Run docker network ls to verify.
+
+Student must explain docker-network.
+
+NGINX with SSL/TLS
+
+Must have Dockerfile.
+
+Check container created with docker-compose ps.
+
+HTTP (port 80) should fail.
+
+HTTPS (https://login.42.fr) must show configured WordPress site (not install page).
+
+TLS v1.2/v1.3 mandatory. Self-signed is accepted.
+
+WordPress with php-fpm and its volume
+
+Must have Dockerfile, without NGINX.
+
+Verify container is created.
+
+Check volume with docker volume ls and inspect. Path must contain /home/login/data/.
+
+Student must add a comment on WordPress.
+
+Student must log in as admin (username not “admin” or similar).
+
+From dashboard, edit a page and confirm change is visible.
+
+MariaDB and its volume
+
+Must have Dockerfile, without NGINX.
+
+Verify container is created.
+
+Verify volume at /home/login/data/.
+
+Student must explain how to log in to DB.
+
+Database must not be empty.
+
+Persistence
+
+Reboot VM.
+
+Relaunch docker-compose.
+
+WordPress and MariaDB must still be configured and data unchanged.

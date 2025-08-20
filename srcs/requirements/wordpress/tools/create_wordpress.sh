@@ -26,7 +26,11 @@ wp user create --allow-root ${WP_USER_LOGIN} ${WP_USER_EMAIL} \
 wp option update blogname "Hello Inception" --allow-root
 wp option update blogdescription "Inception" --allow-root
 wp option update blog_public 0 --allow-root
-
+# Add support for localhost access when accessed from host machine
+if [ "$DOMAIN_NAME" = "aalshafy.42.fr" ]; then
+    wp option update home 'https://localhost' --allow-root
+    wp option update siteurl 'https://localhost' --allow-root
+fi
 wp plugin update --all --allow-root
 
 chown -R www-data:www-data /var/www/html/

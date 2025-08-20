@@ -1,21 +1,19 @@
-FROM alpine:3.19
+FROM alpine:3.22
 
 RUN apk update && \
-    apk add php83 php83-cli php83-fpm php83-mysqli \
-    php83-json php83-openssl php83-curl php83-zlib \
-    php83-xml php83-phar php83-intl php83-dom curl \
-    wget tar openrc vim php83-cgi php83-mbstring \
-    && ln -s /usr/bin/php83 /usr/bin/php
+    apk add php82 php82-cli php82-fpm php82-mysqli \
+    php82-json php82-openssl php82-curl php82-zlib \
+    php82-xml php82-phar php82-intl php82-dom curl \
+    wget tar openrc vim php82-cgi php82-mbstring \
+    && ln -s /usr/bin/php82 /usr/bin/php
 
 # Increase PHP memory limit for WordPress operations
-RUN echo "memory_limit = 256M" >> /etc/php83/php.ini
-
+RUN echo "memory_limit = 256M" >> /etc/php82/php.ini
 
 RUN mkdir -p /run/php
 
 # Copy the .conf in the html directory
-
-COPY ./conf/www.conf /etc/php83/php-fpm.d
+COPY ./conf/www.conf /etc/php82/php-fpm.d
 
 # COPY ./conf/wp-config.php /var/www/html/wordpress/wp-config.php
 
@@ -38,4 +36,4 @@ WORKDIR /var/www/html/
 EXPOSE 9000
 
 #Launch PHP FPM in foreground and ignore deamonize from conf file (-F)
-CMD ["/usr/sbin/php-fpm83", "-F"]
+CMD ["/usr/sbin/php-fpm82", "-F"]

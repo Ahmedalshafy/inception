@@ -22,11 +22,11 @@ fclean: down
 	@yes | docker system prune --all
 	@docker network prune --force
 	@docker volume prune --force
-	@sudo rm -rf /home/$(USER)/data/wordpress_vol/*
-	@sudo rm -rf /home/$(USER)/data/mariadb_vol/*
-	@sudo rm -rf /home/$(USER)/data/wordpress_vol
-	@sudo rm -rf /home/$(USER)/data/mariadb_vol
-	@sudo rm -rf /home/$(USER)/data
+	@sudo rm -rf /home/aalshafy/data/wordpress_vol/*
+	@sudo rm -rf /home/aalshafy/data/mariadb_vol/*
+	@sudo rm -rf /home/aalshafy/data/wordpress_vol
+	@sudo rm -rf /home/aalshafy/data/mariadb_vol
+	@sudo rm -rf /home/aalshafy/data
 
 rebuild: fclean up
 

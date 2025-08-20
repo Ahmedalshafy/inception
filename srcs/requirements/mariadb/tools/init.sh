@@ -30,7 +30,7 @@ exec /usr/bin/mysqld --user=mysql --skip-name-resolve --skip-networking=0 $@
 
 # connect to MySQL as the root user: mysql -u root -p (then enter the root password).
 # Show the list of databases: SHOW DATABASES;
-# Use the 'wordpress' database: use 'wordpress';
+# Use the 'USE wordpress' database: use 'wordpress';
 # Show the tables in the selected database: SHOW TABLES;
 # Select the display name of users from the 'wp_users' table: SELECT wp_users.display_name FROM wp_users;
 # Select all columns from the 'wp_users' table: SELECT * FROM wp_users;

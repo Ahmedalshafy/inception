@@ -1,5 +1,5 @@
 # Use the official Alpine Linux as a parent image
-FROM alpine:3.19
+FROM alpine:3.22
 
 # Install nginx
 RUN apk update

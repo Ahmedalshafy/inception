@@ -1,81 +1,72 @@
 # Docker Compose version - defines feature compatibility
 version: '3.8'
 
-# Define all services (containers) for the LEMP stack
+
 services:
 
-  # NGINX - Web server and reverse proxy (entry point)
   nginx:
-    container_name: nginx                    # Custom container name instead of auto-generated
+    container_name: nginx                    
     build:
-      context: ./requirements/nginx         # Build context directory
-      dockerfile: Dockerfile               # Dockerfile name (default, but explicit)
+      context: ./requirements/nginx       
+      dockerfile: Dockerfile              
     ports:
-      - "443:443"                          # Map host port 443 to container port 443 (HTTPS only)
+      - "443:443"                         
     depends_on:
-      - wordpress                          # Start wordpress before nginx (dependency order)
-    restart: always                        # Auto-restart container if it crashes
+      - wordpress                         
+    restart: always                       
     env_file:
-      - .env                              # Load environment variables from .env file
+      - .env                             
     volumes:
-      - wordpress_data:/var/www/html       # Mount shared WordPress files (read-only for nginx)
+      - wordpress_data:/var/www/html       
     networks:
-      - inception                          # Connect to custom bridge network
+      - inception                          
 
-  # WORDPRESS - PHP application server with PHP-FPM
   wordpress:
-    container_name: wordpress              # Custom container name
+    container_name: wordpress              
     build:
-      context: ./requirements/wordpress    # Build context directory
-      dockerfile: Dockerfile              # Custom Dockerfile for WordPress + PHP-FPM
+      context: ./requirements/wordpress   
+      dockerfile: Dockerfile              
     expose:
-      - 9000                              # Internal port for FastCGI (not exposed to host)
+      - 9000                             
     env_file:
-      - .env                              # Database credentials and WordPress config
+      - .env                              
     depends_on:
-      - mariadb                           # Start database before WordPress
-    restart: always                       # Auto-restart on failure
+      - mariadb                           
+    restart: always                      
     volumes:
-      - wordpress_data:/var/www/html      # Mount WordPress files (read-write access)
+      - wordpress_data:/var/www/html      
     networks:
-      - inception                         # Same network as nginx for communication
-
-  # MARIADB - Database server
+      - inception                         
   mariadb:
-    container_name: mariadb               # Custom container name
+    container_name: mariadb               
     build:
-      context: ./requirements/mariadb     # Build context directory
-      dockerfile: Dockerfile             # Custom Dockerfile for MariaDB setup
+      context: ./requirements/mariadb    
+      dockerfile: Dockerfile             
     expose:
-      - 3306                             # Internal MySQL port (not exposed to host)
+      - 3306                           
     env_file:
-      - .env                             # Database credentials and configuration
-    restart: always                      # Auto-restart on failure
+      - .env                            
+    restart: always                      
     volumes:
-      - mariadb_data:/var/lib/mysql      # Mount database files for persistence
+      - mariadb_data:/var/lib/mysql     
     networks:
-      - inception                        # Same network for WordPress communication
+      - inception                        
 
-
-# Volume definitions - persistent storage that survives container recreation
 volumes:
-  # WordPress files volume (shared between nginx and wordpress)
   wordpress_data:
     driver_opts:
-      o: 'bind'                                    # Bind mount type
-      type: 'none'                                 # No special filesystem type
-      device: '/tmp/inception_data/wordpress_vol'    # Host directory path (local testing)
-      # device: '/home/aalshafy/data/wordpress_vol'   # Original path for school Mac
+      o: 'bind'                                    
+      type: 'none'                                 
+      # device: '/tmp/inception_data/wordpress_vol'    # Host directory path (local testing)
+      device: '/home/aalshafy/data/wordpress_vol'  
 
-  # Database files volume (exclusive to mariadb)
   mariadb_data:
     driver_opts:
-      o: 'bind'                                    # Bind mount type
-      type: 'none'                                 # No special filesystem type
-      device: '/tmp/inception_data/mariadb_vol'      # Host directory path (local testing)
-      # device: '/home/aalshafy/data/mariadb_vol'     # Original path for school Mac
+      o: 'bind'                                   
+      type: 'none'                                
+      # device: '/tmp/inception_data/mariadb_vol'      # Host directory path (local testing)
+      device: '/home/aalshafy/data/mariadb_vol'     
 
-# Network definitions - virtual networks for container communication
 networks:
   inception:
-    driver: bridge                        # Bridge network type (default, isolated from host)
+    driver: bridge                        
